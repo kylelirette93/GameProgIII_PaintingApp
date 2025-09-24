@@ -3,20 +3,24 @@ using UnityEngine.Tilemaps;
 
 public class Paint : ICommand
 {
-    public Tile selectedTile;
+    public Tile newTile;
+    public Vector3Int position;
     public Tile previousTile;
     Tilemap map;
-    public Paint(Tile selectedTile, Vector3Int position, Tilemap map)
-    {       
-        map.SetTile(position, selectedTile);
+    public Paint(Tile newTile, Vector3Int position, Tilemap map)
+    {
+        this.newTile = newTile;
+        this.position = position;
+        this.map = map;
+        previousTile = map.GetTile<Tile>(position);
     }
     public void Execute()
     {
-        
+        map.SetTile(position, newTile);
     }
 
     public void Undo()
     {
-        Execute();
+        map.SetTile(position, previousTile);
     }
 }

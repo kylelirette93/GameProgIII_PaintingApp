@@ -23,13 +23,18 @@ public class Map : MonoBehaviour
     public void Update()
     {
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (Input.GetMouseButtonDown(0))
+        selectedTilePos = new Vector3Int((int)mouseWorldPosition.x, (int)mouseWorldPosition.y, 0);
+
+        if (selectedTilePos.x >= 0 && selectedTilePos.x < mapSize && selectedTilePos.y >= 0 && selectedTilePos.y < mapSize && selectedTile != null)
         {
-            selectedTilePos = new Vector3Int((int)mouseWorldPosition.x, (int)mouseWorldPosition.y, 0);
-            ICommand paint = new Paint(selectedTile, selectedTilePos, map);
-            commandManager.ExecuteCommand(paint);
-            Debug.Log("Selected Tile Position is at: " + selectedTilePos);
-        }      
+            if (Input.GetMouseButtonDown(0))
+            {
+                ICommand paint = new Paint(selectedTile, selectedTilePos, map);
+                commandManager.ExecuteCommand(paint);
+                Debug.Log("Selected Tile Position is at: " + selectedTilePos);
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.U))
         {
             commandManager.Undo();
